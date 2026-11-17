@@ -1,5 +1,5 @@
 // 料金計算と住宅保険の月数の単体テスト（testdata/ の検算データを使う）
-// 実行: node --test atinn-access-sheet/tests/
+// 実行: node --test tests/
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const path = require('node:path');

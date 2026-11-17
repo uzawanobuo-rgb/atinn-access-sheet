@@ -45,12 +45,16 @@
 
 ## 公開のしかた（GitHub Pages）
 1. GitHub のリポジトリで **Settings → Pages** を開きます。
-2. 「Build and deployment」の Source を **Deploy from a branch** にし、公開するブランチと `/ (root)` を選んで保存します。
-3. 数分後に `https://<ユーザー名>.github.io/<リポジトリ名>/atinn-access-sheet/` で開けます。
+2. 「Build and deployment」の Source を **Deploy from a branch** にし、`main` と `/ (root)` を選んで保存します。
+3. 数分後に `https://<組織名またはユーザー名>.github.io/<リポジトリ名>/` で開けます。
+
+公開URLが変わったときは、ブックマーク（プラン取込・乗換取込）を新しいURLの画面から登録し直してください（ブックマークは公開ページの `js/bm-*.js` を読み込むため）。入力内容のブラウザ保存も URL ごとなので、引き継ぐときは古い画面で「データ保存」→ 新しい画面で「データ読込」をします。
 
 サーバー側の処理はないので、HTMLとJSを置くだけで動きます。ブラウザは Chrome／Edge の最新版を想定しています。
 
 ## 社内サーバー版
+下の表のコミット番号・PR番号は、移す前の個人リポジトリ（`atinn-access-sheet/` フォルダだったころ）のものです。このリポジトリでは同じ内容のコミットを、コミットメッセージで探してください。
+
 | 渡した日 | 内容（コミット） | 状態 |
 |---|---|---|
 | 2026-10-09 | `795a806`（main へは PR #106 の `ba89673`） | 設置済み（http://magi2.atinn.jp/access-sheet/index.html）。プラン取込で Not Found になる不具合あり |
@@ -60,13 +64,13 @@
 
 - 置き場所：http://magi2.atinn.jp/access-sheet/index.html （フォルダのアドレスでは index.html を返さないので、ツールは index.html を開く）
 - 渡したもの：`index.html`・`view.html`・`css/`・`js/`・`img/`・`vendor/` を `access-sheet` フォルダに入れた ZIP（＋設置メモ）。
-- 同じものを作り直すとき：`git archive <コミット> atinn-access-sheet` で取り出し、上のファイルだけを使う。
+- 同じものを作り直すとき：`git archive --prefix=access-sheet/ -o access-sheet.zip <コミット> index.html view.html css js img vendor` で作る。
 - 更新するとき：新しい内容で同じ構成の ZIP を作り、フォルダごと差し替える。http のサーバーでは、ブックマーク（プラン取込・乗換取込）の登録し直しも必要。
 - 社内サーバーでは共有リンクは社外から開けないので、お客様へは画像・PDF・メール用テキストで送る。
 
 ## 開発
 ```
-node --test atinn-access-sheet/tests/*.test.js
+node --test tests/*.test.js
 ```
 - `js/calc.js` 料金・保険月数（`testdata/price_cases.json`, `insurance_months_cases.json` でテスト）
 - `js/geo.js` 座標変換・45度化（方位角と距離の順序をテスト）
@@ -81,6 +85,9 @@ node --test atinn-access-sheet/tests/*.test.js
 - 人数追加料金・ペット・子どもの追加料金は未対応です（注記に人数のみ表示）。
 - 東京以外のエリアの目印（山手線の代わり）は未対応です。
 - 見積もり有効期限は入れていません。
+
+## 経緯
+もとは個人リポジトリの `atinn-access-sheet/` フォルダで作ったもので、このリポジトリに履歴ごと移し、フォルダの中身をリポジトリの直下に置きました。
 
 ## Claude Code で作るとき（チャットにプランURLを送る方法）
 ツールを使わず、Claude Code のセッションにプランURLを送って作ることもできます。
